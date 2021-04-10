@@ -8,4 +8,5 @@ version = "0.1.0"
 
 [dependencies]
 # you can check the latest version here: https://crates.io/crates/yew
+anyhow = ""
 yew = "0.17"
