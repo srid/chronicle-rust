@@ -35,10 +35,14 @@
                 # Because rust-overlay bundles multiple rust packages into one
                 # derivation, specify that mega-bundle here, so that crate2nix
                 # will use them automatically.
-                rustc = self.rust-bin.stable.latest.default;
-                cargo = self.rust-bin.stable.latest.default;
+                rustc = rustWasm self;
+                cargo = rustWasm self;
               })
             ];
+          };
+          rustWasm = x: x.rust-bin.stable.latest.default.override {
+            extensions = [ "rust-src" ];
+            targets = [ "wasm32-unknown-unknown" ];
           };
           inherit (import "${crate2nix}/tools.nix" { inherit pkgs; })
             generatedCargoNix;
@@ -63,7 +67,12 @@
 
           # Configuration for the non-Rust dependencies
           buildInputs = with pkgs; [ openssl.dev ];
-          nativeBuildInputs = with pkgs; [ rustc cargo pkgconfig nixpkgs-fmt ];
+          nativeBuildInputs = with pkgs; [
+            rustc
+            cargo
+            pkgconfig
+            nixpkgs-fmt
+          ];
         in
         rec {
           packages.${name} = project.rootCrate.build;
