@@ -1,7 +1,47 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Yew App</title>
-  </head>
+<!DOCTYPE HTML>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Now ...">
+  <!-- link rel="shortcut icon" href="/app.svg" -->
+  <title>Now &mdash; dev</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500&family=Roboto&display=swap" rel="stylesheet">
+  <script type="text/javascript"
+    src="https://cdn.jsdelivr.net/combine/npm/twind/twind.umd.min.js,npm/twind/observe/observe.umd.min.js"></script>
+  <script type="text/javascript">twind.setup({
+      theme: {
+        extend: {
+          fontFamily: (theme) => ({
+            sans: ["DM Sans", theme("fontFamily.sans")],
+            serif: ["Roboto", theme("fontFamily.serif")]
+          })
+        }
+      },
+      preflight: {
+        body: {
+          "@apply": "text-gray-700"
+        },
+        "a:any-link": {
+          "@apply": "no-underline hover:font-bold"
+        },
+        p: {
+          "@apply": "mb-2"
+        },
+        "header.pageHeader": {
+          "@apply": "mb-4 border-l-4 pl-2 hover:(shadow-sm bg-pink-50)"
+        },
+        "ul": {
+          "@apply": "list-disk"
+        },
+        "ul > li": {
+          "@apply": "py-1 my-4 border-t-1 rounded border-l-2 pl-2 hover:(bg-gray-50)"
+        }
+      },
+    })
+    twindObserve.observe(document.documentElement)</script>
+</head>
+
 </html>

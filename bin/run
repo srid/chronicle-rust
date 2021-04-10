@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+set -xe
+exec nix develop -c trunk serve --port 8081
