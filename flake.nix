@@ -21,7 +21,7 @@
   outputs = { self, nixpkgs, utils, rust-overlay, crate2nix, ... }:
     let
       # If you change the name here, you must also do it in Cargo.toml
-      name = "arise";
+      name = "now";
     in
     utils.lib.eachDefaultSystem
       (system:

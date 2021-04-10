@@ -94,15 +94,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "33954243bd79057c2de7338850b85983a44588021f8a5fee574a8888c6de4344"
 
 [[package]]
-name = "arise"
-version = "0.1.0"
-dependencies = [
- "trunk",
- "wasm-bindgen-cli",
- "yew",
-]
-
-[[package]]
 name = "arrayref"
 version = "0.3.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1878,6 +1869,15 @@ dependencies = [
  "mio-extras",
  "walkdir",
  "winapi 0.3.9",
+]
+
+[[package]]
+name = "now"
+version = "0.1.0"
+dependencies = [
+ "trunk",
+ "wasm-bindgen-cli",
+ "yew",
 ]
 
 [[package]]
