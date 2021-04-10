@@ -90,7 +90,9 @@
           # `nix develop`
           devShell = pkgs.mkShell
             {
-              inherit buildInputs nativeBuildInputs;
+              inherit nativeBuildInputs;
+              inputsFrom = builtins.attrValues self.packages.${system};
+              buildInputs = buildInputs ++ (with pkgs; [ cargo-watch trunk wasm-bindgen-cli ]);
               RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
             };
         }
