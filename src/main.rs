@@ -1,6 +1,16 @@
+#![recursion_limit = "10000"]
 use yew::services::fetch::{Request, Response};
 use yew::{format::Nothing, services::FetchService};
 use yew::{prelude::*, services::fetch::FetchTask};
+use yew_router::prelude::*;
+
+#[derive(Switch, Debug, Clone, Copy)]
+enum AppRoute {
+    #[to = "/test"]
+    Test,
+    #[to = "/"]
+    Index,
+}
 
 enum Msg {
     AddOne,
@@ -68,15 +78,40 @@ impl Component for Model {
         html! {
             <body>
                 <div class="container mx-auto">
-                    <div>
+                    <Router<AppRoute, ()>
+                        render = Router::render(|switch: AppRoute| {
+                            match switch {
+                                AppRoute::Test => html!{
+                                <RouterAnchor<AppRoute>
+                                    route=AppRoute::Index
+                                    >
+                                    { "Index" }
+                                </RouterAnchor<AppRoute>>
+                                },
+                                AppRoute::Index => html! {
+                                <div>
+                                    <RouterAnchor<AppRoute>
+                                        route=AppRoute::Test
+                                        >
+                                        { "Test" }
+                                    </RouterAnchor<AppRoute>>
+                                </div>
+                                }
+                            }
+                        })
+                    />
+
+                    <div class="border-t-1">
                         <button
                             class="border-2 rounded p-2 bg-purple-200"
-                            onclick=self.link.callback(|_| Msg::AddOne)>{ "Fetch something" }</button>
+                            onclick=self.link.callback(|_|
+                            Msg::AddOne)>{ "Fetch something" }</button>
                         <p>{ self.value }</p>
                         <div class="monospace overflow">
-                        { self.msg.clone() }
+                            { self.msg.clone() }
                         </div>
                     </div>
+
                 </div>
             </body>
         }

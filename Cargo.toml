@@ -10,3 +10,4 @@ version = "0.1.0"
 # you can check the latest version here: https://crates.io/crates/yew
 anyhow = ""
 yew = "0.17"
+yew-router = "0.14"
