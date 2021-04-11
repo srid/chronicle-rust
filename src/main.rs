@@ -4,7 +4,7 @@ use yew::{format::Nothing, services::FetchService};
 use yew::{prelude::*, services::fetch::FetchTask};
 use yew_router::prelude::*;
 
-#[derive(Switch, Debug, Clone, Copy)]
+#[derive(Switch, Debug, Clone)]
 enum AppRoute {
     #[to = "/test"]
     Test,
@@ -13,7 +13,7 @@ enum AppRoute {
 }
 
 enum Msg {
-    AddOne,
+    LoadInfo,
     SetInfo(Result<String, anyhow::Error>),
 }
 
@@ -41,7 +41,7 @@ impl Component for Model {
 
     fn update(&mut self, msg: Self::Message) -> ShouldRender {
         match msg {
-            Msg::AddOne => {
+            Msg::LoadInfo => {
                 // Playing with network fetch ...
                 let url = "https://www.reddit.com/r/TheMotte/top.json";
                 let request = Request::get(url)
@@ -72,6 +72,12 @@ impl Component for Model {
         // previously received properties.
         // This component has no properties so we will always return "false".
         false
+    }
+
+    fn rendered(&mut self, first_render: bool) {
+        if first_render {
+            self.link.send_message(Msg::LoadInfo)
+        }
     }
 
     fn view(&self) -> Html {
@@ -105,7 +111,7 @@ impl Component for Model {
                         <button
                             class="border-2 rounded p-2 bg-purple-200"
                             onclick=self.link.callback(|_|
-                            Msg::AddOne)>{ "Fetch something" }</button>
+                            Msg::LoadInfo)>{ "Refresh" }</button>
                         <p>{ self.value }</p>
                         <div class="monospace overflow">
                             { self.msg.clone() }
