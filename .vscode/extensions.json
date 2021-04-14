@@ -2,6 +2,7 @@
     "recommendations": [
         "matklad.rust-analyzer",
         "jnoortheen.nix-ide",
-        "wayou.vscode-todo-highlight"
+        "wayou.vscode-todo-highlight",
+        "adpyke.vscode-sql-formatter"
     ]
 }

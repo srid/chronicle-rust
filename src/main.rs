@@ -29,7 +29,7 @@ struct Model {
 // TODO: Refactor and put in module.
 async fn fetch_data() -> Msg {
     let client = Postgrest::new("http://localhost:7000");
-    let mresp = client.from("todos").select("*").execute().await;
+    let mresp = client.from("thought").select("*").execute().await;
     let v = match mresp {
         Err(err) => Err(err),
         Ok(resp) => match resp.text().await {

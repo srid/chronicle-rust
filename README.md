@@ -7,7 +7,7 @@ bin/run  # Or, Ctrl+Shift+B in VSCode
 ## WHITEBOARD
 
 - DONE Connect to local postgrest and get some info to display on frontend
-- TODO postgrest: design schema
-- TODO web: render a basic timeline
+- DONE postgrest: design schema
+- TODO web: render a basic timeline of thoughts
 - TODO jwt login
 - TODO deploy
