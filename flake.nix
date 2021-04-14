@@ -20,8 +20,8 @@
 
   outputs = { self, nixpkgs, utils, rust-overlay, crate2nix, ... }:
     let
-      # If you change the name here, you must also do it in Cargo.toml
       name = "now";
+      rustChannel = "stable";
     in
     utils.lib.eachDefaultSystem
       (system:
@@ -40,7 +40,7 @@
               })
             ];
           };
-          rustWasm = x: x.rust-bin.stable.latest.default.override {
+          rustWasm = x: x.rust-bin.${rustChannel}.latest.default.override {
             extensions = [ "rust-src" ];
             targets = [ "wasm32-unknown-unknown" ];
           };
@@ -72,6 +72,8 @@
             cargo
             pkgconfig
             nixpkgs-fmt
+            pkgs.rust-bin.${rustChannel}.latest.rust-analysis
+            pkgs.rust-bin.${rustChannel}.latest.rls
           ];
         in
         rec {
@@ -93,7 +95,7 @@
               inherit nativeBuildInputs;
               inputsFrom = builtins.attrValues self.packages.${system};
               buildInputs = buildInputs ++ (with pkgs; [ cargo-watch trunk wasm-bindgen-cli ]);
-              RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
+              RUST_SRC_PATH = "${pkgs.rust-bin.${rustChannel}.latest.rust-src}/lib/rustlib/src/rust/library";
             };
         }
       );

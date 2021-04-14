@@ -113,7 +113,7 @@ impl Component for Model {
                             onclick=self.link.callback(|_|
                             Msg::LoadInfo)>{ "Refresh" }</button>
                         <p>{ self.value }</p>
-                        <div class="monospace overflow">
+                        <div class="font-mono overflow">
                             { self.msg.clone() }
                         </div>
                     </div>
