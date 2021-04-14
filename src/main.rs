@@ -1,5 +1,7 @@
 #![recursion_limit = "10000"]
+use chrono::prelude::*;
 use postgrest::Postgrest;
+use serde::Deserialize;
 use yew::prelude::*;
 use yew_router::prelude::*;
 use yewtil::future::LinkFuture;
@@ -14,15 +16,22 @@ enum AppRoute {
 
 enum Msg {
     LoadInfo,
-    SetInfo(Result<String, reqwest::Error>),
+    SetInfo(Result<Vec<Thought>, reqwest::Error>),
 }
 
 struct Model {
     // `ComponentLink` is like a reference to a component.
     // It can be used to send messages to the component
     link: ComponentLink<Self>,
-    value: i64,
-    msg: String,
+    thoughts: Vec<Thought>,
+    error: Option<reqwest::Error>,
+}
+
+#[derive(Deserialize)]
+struct Thought {
+    id: String,
+    content: String,
+    created: DateTime<Utc>,
 }
 
 // Sample code to talk to postgrest, exposed at :7000
@@ -32,7 +41,7 @@ async fn fetch_data() -> Msg {
     let mresp = client.from("thought").select("*").execute().await;
     let v = match mresp {
         Err(err) => Err(err),
-        Ok(resp) => match resp.text().await {
+        Ok(resp) => match resp.json::<Vec<Thought>>().await {
             Err(err) => Err(err),
             Ok(v) => Ok(v),
         },
@@ -47,8 +56,8 @@ impl Component for Model {
     fn create(_props: Self::Properties, link: ComponentLink<Self>) -> Self {
         Self {
             link,
-            value: 0,
-            msg: "...".to_string(),
+            thoughts: vec![],
+            error: None,
         }
     }
 
@@ -61,8 +70,14 @@ impl Component for Model {
             }
             Msg::SetInfo(response) => {
                 match response {
-                    Ok(s) => self.msg = s,
-                    Err(error) => self.msg = error.to_string(),
+                    Ok(s) => {
+                        self.thoughts = s;
+                        self.error = None;
+                    }
+                    Err(error) => {
+                        self.thoughts = vec![];
+                        self.error = Some(error);
+                    }
                 };
                 true
             }
@@ -114,15 +129,24 @@ impl Component for Model {
                             class="border-2 rounded p-2 bg-purple-200"
                             onclick=self.link.callback(|_|
                             Msg::LoadInfo)>{ "Refresh" }</button>
-                        <p>{ self.value }</p>
                         <div class="font-mono overflow">
-                            { self.msg.clone() }
+                            { for self.thoughts.iter().map(render_thought)}
                         </div>
                     </div>
 
                 </div>
             </body>
         }
+    }
+}
+
+fn render_thought(thought: &Thought) -> Html {
+    html! {
+        <div class="border-1 rounded p-2 mb-2">
+            <div class="text-gray-200"> { thought.id.clone() } </div>
+            <div class="text-gray-400"> { thought.created.to_string() } </div>
+            <div> { thought.content.clone() }</div>
+        </div>
     }
 }
 

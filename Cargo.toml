@@ -13,5 +13,7 @@ yew = "0.17"
 yew-router = "0.14"
 yewtil = "0.3.2"
 # https://github.com/supabase/postgrest-rs/pull/23
+chrono = {version = "0.4", features = ["serde"]}
 postgrest = {git = "https://github.com/srid/postgrest-rs", branch = "master"}
 reqwest = {version = "0.10", features = ["json"]}
+serde = "1.0"

@@ -15,6 +15,8 @@ bin/run  # Or, Ctrl+Shift+B in VSCode
 
 - DONE Connect to local postgrest and get some info to display on frontend
 - DONE postgrest: design schema
-- TODO web: render a basic timeline of thoughts
+- DONE web: render a basic timeline of thoughts
+- TODO web: add thoughts
+- TODO web: connect thoughts, as parent/child
 - TODO jwt login
 - TODO deploy
