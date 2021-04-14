@@ -1,8 +1,8 @@
 #![recursion_limit = "10000"]
-use yew::services::fetch::{Request, Response};
-use yew::{format::Nothing, services::FetchService};
-use yew::{prelude::*, services::fetch::FetchTask};
+use postgrest::Postgrest;
+use yew::prelude::*;
 use yew_router::prelude::*;
+use yewtil::future::LinkFuture;
 
 #[derive(Switch, Debug, Clone)]
 enum AppRoute {
@@ -14,7 +14,7 @@ enum AppRoute {
 
 enum Msg {
     LoadInfo,
-    SetInfo(Result<String, anyhow::Error>),
+    SetInfo(Result<String, reqwest::Error>),
 }
 
 struct Model {
@@ -23,7 +23,21 @@ struct Model {
     link: ComponentLink<Self>,
     value: i64,
     msg: String,
-    fetch_task: Option<FetchTask>,
+}
+
+// Sample code to talk to postgrest, exposed at :7000
+// TODO: Refactor and put in module.
+async fn fetch_data() -> Msg {
+    let client = Postgrest::new("http://localhost:7000");
+    let mresp = client.from("todos").select("*").execute().await;
+    let v = match mresp {
+        Err(err) => Err(err),
+        Ok(resp) => match resp.text().await {
+            Err(err) => Err(err),
+            Ok(v) => Ok(v),
+        },
+    };
+    Msg::SetInfo(v)
 }
 
 impl Component for Model {
@@ -35,26 +49,14 @@ impl Component for Model {
             link,
             value: 0,
             msg: "...".to_string(),
-            fetch_task: None,
         }
     }
 
     fn update(&mut self, msg: Self::Message) -> ShouldRender {
         match msg {
             Msg::LoadInfo => {
-                // Playing with network fetch ...
-                let url = "https://www.reddit.com/r/TheMotte/top.json";
-                let request = Request::get(url)
-                    .body(Nothing)
-                    .expect("Could not build that request");
-                let callback = self
-                    .link
-                    .callback(|rsp: Response<_>| Msg::SetInfo(rsp.into_body()));
-                let task = FetchService::fetch(request, callback).expect("failed to start request");
-                self.fetch_task = Some(task);
-                self.value += 1;
-                // the value has changed so we need to
-                // re-render for it to appear on the page
+                let data_future = fetch_data();
+                self.link.send_future(data_future);
                 true
             }
             Msg::SetInfo(response) => {

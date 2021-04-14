@@ -78,11 +78,29 @@
         "type": "github"
       }
     },
+    "postgrest-rs": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1618362221,
+        "narHash": "sha256-bnvuPcgxdDQXg5wgHiVcAJIOjrGwA7ABtUdLCDSvaOY=",
+        "owner": "srid",
+        "repo": "postgrest-rs",
+        "rev": "2af2a3aa3fc2627714ce2e536547a89628442dd4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "srid",
+        "repo": "postgrest-rs",
+        "rev": "2af2a3aa3fc2627714ce2e536547a89628442dd4",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "crate2nix": "crate2nix",
         "flake-compat": "flake-compat",
         "nixpkgs": "nixpkgs",
+        "postgrest-rs": "postgrest-rs",
         "rust-overlay": "rust-overlay",
         "utils": "utils"
       }

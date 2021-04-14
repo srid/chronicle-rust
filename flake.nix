@@ -16,9 +16,14 @@
       url = "github:edolstra/flake-compat";
       flake = false;
     };
+    postgrest-rs = {
+      # https://github.com/supabase/postgrest-rs/pull/23
+      url = "github:srid/postgrest-rs/2af2a3aa3fc2627714ce2e536547a89628442dd4";
+      flake = false;
+    };
   };
 
-  outputs = { self, nixpkgs, utils, rust-overlay, crate2nix, ... }:
+  outputs = inputs@{ self, nixpkgs, utils, rust-overlay, crate2nix, ... }:
     let
       name = "x";
       rustChannel = "stable";
@@ -57,10 +62,13 @@
               # Individual crate overrides go here
               # Example: https://github.com/balsoft/simple-osd-daemons/blob/6f85144934c0c1382c7a4d3a2bbb80106776e270/flake.nix#L28-L50
               defaultCrateOverrides = pkgs.defaultCrateOverrides // {
-                # The himalaya crate itself is overriden here. Typically we
+                # The app crate itself is overriden here. Typically we
                 # configure non-Rust dependencies (see below) here.
                 ${name} = oldAttrs: {
                   inherit buildInputs nativeBuildInputs;
+                };
+                postgrest = oldAttrs: with pkgs; {
+                  src = inputs.postgrest-rs;
                 };
               };
             };
