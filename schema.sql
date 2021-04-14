@@ -1,11 +1,12 @@
+--() { :; }; exec psql -U postgres -v schema=$1 -f "$0"
 SET
     TIME ZONE 'UTC';
 
-DROP SCHEMA IF EXISTS chronicle CASCADE;
+DROP SCHEMA IF EXISTS :schema CASCADE;
 
-create schema chronicle;
+create schema :schema;
 
-create table chronicle.thought (
+create table :schema.thought (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     content text not null,
     created timestamptz DEFAULT now(),
@@ -16,9 +17,9 @@ create table chronicle.thought (
     properties jsonb
 );
 
-create table chronicle.connection (
-    from_ UUID NOT NULL REFERENCES chronicle.thought ON DELETE CASCADE,
-    to_ UUID NOT NULL REFERENCES chronicle.thought ON DELETE CASCADE,
+create table :schema.connection (
+    from_ UUID NOT NULL REFERENCES :schema.thought ON DELETE CASCADE,
+    to_ UUID NOT NULL REFERENCES :schema.thought ON DELETE CASCADE,
     -- Branching connection means this is a parent->child relationship. i.e.,
     -- `from_` is the parent of `to_`.
     is_branch boolean DEFAULT false,
@@ -26,7 +27,7 @@ create table chronicle.connection (
 );
 
 insert into
-    chronicle.thought (content, properties)
+    :schema.thought (content, properties)
 values
     ('first thought', '{"tags": ["foo"]}'),
     ('second thought', '{}');
@@ -34,9 +35,9 @@ values
 select
     *
 from
-    chronicle.thought;
+    :schema.thought;
 
 select
     *
 from
-    chronicle.connection;
+    :schema.connection;
