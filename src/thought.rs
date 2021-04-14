@@ -1,10 +1,13 @@
 use chrono::prelude::*;
 use serde::Deserialize;
+use uuid::Uuid;
+use validator::Validate;
 use yew::prelude::*;
 
-#[derive(PartialEq, Deserialize, Clone, Debug, Properties)]
+#[derive(PartialEq, Deserialize, Clone, Debug, Validate, Properties)]
 pub struct Thought {
-    id: String,
+    id: Uuid,
+    #[validate(length(min = 4))]
     content: String,
     created: DateTime<Utc>,
 }
@@ -33,7 +36,7 @@ impl Component for Thought {
     fn view(&self) -> Html {
         html! {
             <div class="border-1 rounded p-2 mb-2">
-                <div class="text-gray-200"> { self.id.clone() } </div>
+                <div class="text-gray-200"> { self.id.to_simple() } </div>
                 <div class="text-gray-400"> { self.created.to_string() } </div>
                 <div> { self.content.clone() }</div>
             </div>

@@ -17,3 +17,5 @@ chrono = {version = "0.4", features = ["serde"]}
 postgrest = {git = "https://github.com/srid/postgrest-rs", branch = "master"}
 reqwest = {version = "0.10", features = ["json"]}
 serde = "1.0"
+uuid = {version = "0.8", features = ["serde", "v4", "wasm-bindgen"]}
+validator = {version = "0.12", features = ["derive"]}
