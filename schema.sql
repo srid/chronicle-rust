@@ -2,11 +2,14 @@
 SET
     TIME ZONE 'UTC';
 
-DROP SCHEMA IF EXISTS :schema CASCADE;
+-- Uncomment this if recreating the database fro mscratch
+--
+-- DROP SCHEMA IF EXISTS :schema CASCADE;
+-- create schema :schema;
+select
+    1;
 
-create schema :schema;
-
-create table :schema.thought (
+create table IF NOT EXISTS :schema.thought (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     content text not null,
     created timestamptz DEFAULT now(),
@@ -17,7 +20,7 @@ create table :schema.thought (
     properties jsonb
 );
 
-create table :schema.connection (
+create table IF NOT EXISTS :schema.connection (
     from_ UUID NOT NULL REFERENCES :schema.thought ON DELETE CASCADE,
     to_ UUID NOT NULL REFERENCES :schema.thought ON DELETE CASCADE,
     -- Branching connection means this is a parent->child relationship. i.e.,
@@ -27,8 +30,5 @@ create table :schema.connection (
 );
 
 -- Popular some test data for dev server
-insert into
-    :schema.thought (content, properties)
-values
-    ('first thought', '{"tags": ["foo"]}'),
-    ('second thought ...', '{}');
+-- insert into :schema.thought (content, properties)
+-- values ('first thought', '{"tags": ["foo"]}'), ('second thought ...', '{}');
