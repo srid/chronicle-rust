@@ -1,6 +1,7 @@
 {
     "recommendations": [
         "matklad.rust-analyzer",
-        "jnoortheen.nix-ide"
+        "jnoortheen.nix-ide",
+        "wayou.vscode-todo-highlight"
     ]
 }

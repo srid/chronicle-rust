@@ -20,7 +20,7 @@
 
   outputs = { self, nixpkgs, utils, rust-overlay, crate2nix, ... }:
     let
-      name = "now";
+      name = "x";
       rustChannel = "stable";
     in
     utils.lib.eachDefaultSystem

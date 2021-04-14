@@ -325,15 +325,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "now"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "yew",
- "yew-router",
-]
-
-[[package]]
 name = "pin-project-lite"
 version = "0.2.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -541,6 +532,15 @@ checksum = "a905d57e488fec8861446d3393670fb50d27a262344013181c2cdf9fff5481be"
 dependencies = [
  "js-sys",
  "wasm-bindgen",
+]
+
+[[package]]
+name = "x"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "yew",
+ "yew-router",
 ]
 
 [[package]]
