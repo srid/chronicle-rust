@@ -26,18 +26,9 @@ create table :schema.connection (
     PRIMARY KEY(from_, to_)
 );
 
+-- Popular some test data for dev server
 insert into
     :schema.thought (content, properties)
 values
     ('first thought', '{"tags": ["foo"]}'),
-    ('second thought', '{}');
-
-select
-    *
-from
-    :schema.thought;
-
-select
-    *
-from
-    :schema.connection;
+    ('second thought ...', '{}');

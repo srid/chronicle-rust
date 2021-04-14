@@ -5,7 +5,7 @@
   description = "My awesome Rust project";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/4c87cb87a2db6b9eb43541c1cf83f2a2f725fa25";
     utils.url = "github:numtide/flake-utils";
     rust-overlay.url = "github:oxalica/rust-overlay";
     crate2nix = {
@@ -102,7 +102,7 @@
             {
               inherit nativeBuildInputs;
               inputsFrom = builtins.attrValues self.packages.${system};
-              buildInputs = buildInputs ++ (with pkgs; [ cargo-watch trunk wasm-bindgen-cli ]);
+              buildInputs = buildInputs ++ (with pkgs; [ trunk wasm-bindgen-cli ]);
               RUST_SRC_PATH = "${pkgs.rust-bin.${rustChannel}.latest.rust-src}/lib/rustlib/src/rust/library";
             };
         }

@@ -24,6 +24,7 @@ struct Model {
     // It can be used to send messages to the component
     link: ComponentLink<Self>,
     thoughts: Vec<Thought>,
+    // FIXME Use Result type with data (thoughts)
     error: Option<reqwest::Error>,
 }
 
@@ -129,7 +130,7 @@ impl Component for Model {
                             class="border-2 rounded p-2 bg-purple-200"
                             onclick=self.link.callback(|_|
                             Msg::LoadInfo)>{ "Refresh" }</button>
-                        <div class="font-mono overflow">
+                        <div class="overflow">
                             { for self.thoughts.iter().map(render_thought)}
                         </div>
                     </div>
